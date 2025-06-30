@@ -160,7 +160,51 @@ Like and follow <a href="https://www.facebook.com/profile.php?id=61575696937874"
 	<br>
 	<br>
 	Waiting for XRP to drop and make an entry point so where i can entry a short pos. <br>
-	<img src="nf.png" width="80%" height="60%"> 
+	<img src="nf.png" width="80%" height="60%"> <br>
+
+
+
+
+
+
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+	<canvas id="chart" width="800" height="600"></canvas>
+	<script>
+		const ctx = document.getElementById('chart').getContext('2d');
+		const chart = new Chart(ctx, {
+			type: 'line',
+			data: {
+				labels: [],
+				datasets: [{
+					label: 'BTC Price',
+					data: [],
+					backgroundColor: 'rgba(255, 99, 132, 0.2)',
+					borderColor: 'rgba(255, 99, 132, 1)',
+					borderWidth: 1
+				}]
+			},
+			options: {
+				scales: {
+					y: {
+						beginAtZero: false
+					}
+				}
+			}
+		});
+
+		fetch('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=30')
+			.then(response => response.json())
+			.then(data => {
+				const prices = data.prices;
+				const labels = prices.map(price => new Date(price[0]).toLocaleString());
+				const values = prices.map(price => price[1]);
+				chart.data.labels = labels;
+				chart.data.datasets[0].data = values;
+				chart.update();
+			});
+	</script>
 
 
 
